@@ -2,14 +2,15 @@ package com.jm.customer;
 
 import com.jm.clients.fraud.FraudCheckResponse;
 import com.jm.clients.fraud.FraudClient;
+import com.jm.clients.notification.NotificationClient;
+import com.jm.clients.notification.NotificationRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
-public record CustomerService(List customers,
-                              CustomerRepository customerRepository, RestTemplate restTemplate,
-                              FraudClient fraudClient) {
+public record CustomerService(CustomerRepository customerRepository,
+                              FraudClient fraudClient,
+                              NotificationClient notificationClient) {
     public void registerCustomer(CustomerRegistrationRequest request) throws illegalStateException {
         Customer customer = Customer.builder()
                 .firstName(request.firstName())
@@ -19,12 +20,6 @@ public record CustomerService(List customers,
         customerRepository.saveAndFlush(customer);
 
 //        //todo: check if fraudster
-//        String uri = "http://FRAUD/api/v1/fraud-check/{customerID}";
-//        FraudCheckResponse fraudCheckResponse = restTemplate.
-//                getForObject(uri,
-//                        FraudCheckResponse.class,
-//                        customer.getId()
-//                );
         FraudCheckResponse fraudCheckResponse =
                 fraudClient.isFraudster(customer.getId());
         if(fraudCheckResponse.isFraudster()){
@@ -35,6 +30,16 @@ public record CustomerService(List customers,
         //todo: check if email is not taken
 
         //todo: send notification
+        notificationClient.sendNotification(
+                new NotificationRequest(
+                        customer.getId(),
+                        customer.getEmail(),
+                        String.format("Hi %s, welcome to Jocyline ...",
+                                customer.getFirstName())
+                        )
+        );
+
+
     }
 
 
