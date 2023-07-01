@@ -2,3 +2,7 @@
 /customer/target/
 /eureka-server/target/
 /fraud/target/
+/notification/target/
+/clients/target/
+/apigateway/target/
+.idea
