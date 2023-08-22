@@ -36,27 +36,27 @@ services:
       - "5672:5672"
       - "15672:15672"
 
-  eureka-server:
-    image: jmagerodocker/eureka-server:latest
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-  apigateway:
-    image: jmagerodocker/apigateway:latest
-    container_name: apigateway
-    ports:
-      - "8083:8083"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-    depends_on:
-      - eureka-server
-
+#  eureka-server:
+#    image: jmagerodocker/eureka-server:latest
+#    container_name: eureka-server
+#    ports:
+#      - "8761:8761"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    networks:
+#      - spring
+#  apigateway:
+#    image: jmagerodocker/apigateway:latest
+#    container_name: apigateway
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    networks:
+#      - spring
+#    depends_on:
+#      - eureka-server
+#
   customer:
     image: jmagerodocker/customer:latest
     container_name: customer
@@ -68,7 +68,6 @@ services:
       - spring
       - postgres
     depends_on:
-      - eureka-server
       - postgres
       - rabbitmq
 
@@ -83,7 +82,6 @@ services:
       - spring
       - postgres
     depends_on:
-      - eureka-server
       - postgres
       - rabbitmq
 
@@ -98,7 +96,6 @@ services:
       - spring
       - postgres
     depends_on:
-      - eureka-server
       - postgres
       - rabbitmq
 

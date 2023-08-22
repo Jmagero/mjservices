@@ -1,13 +1,12 @@
 server:
   port: 8082
-
 spring:
   application:
     name: notification
   datasource:
     username: 'jmagero'
     password: 'password'
-    url: jdbc:postgresql://postgres:5432/notification
+    url: jdbc:postgresql://localhost:5432/notification
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -19,6 +18,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka-server:8761/eureka
+      defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
+    enabled: false
